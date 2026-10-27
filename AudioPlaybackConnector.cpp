@@ -229,6 +229,25 @@ void SetupFlyout()
 
 void SetupMenu()
 {
+	MenuFlyoutItem lanItem;
+	lanItem.Text(L"局域网音频 / LAN Audio");
+	lanItem.Click([](const auto&, const auto&) {
+		wchar_t modulePath[32768]{};
+		const auto length = GetModuleFileNameW(nullptr, modulePath, ARRAYSIZE(modulePath));
+		if (length == 0 || length >= ARRAYSIZE(modulePath))
+		{
+			TaskDialog(g_hWnd, nullptr, L"LAN Audio", nullptr, L"Cannot find the application folder.", TDCBF_OK_BUTTON, TD_ERROR_ICON, nullptr);
+			return;
+		}
+		const auto executable = std::filesystem::path(modulePath).parent_path() / L"AudioPlaybackConnectorLAN.exe";
+		if (reinterpret_cast<INT_PTR>(ShellExecuteW(g_hWnd, L"open", executable.c_str(), nullptr, nullptr, SW_SHOWNORMAL)) <= 32)
+		{
+			TaskDialog(g_hWnd, nullptr, L"LAN Audio", nullptr,
+				L"Please place AudioPlaybackConnectorLAN.exe next to this program.\n请将局域网模块放在此程序旁边。",
+				TDCBF_OK_BUTTON, TD_ERROR_ICON, nullptr);
+		}
+	});
+
 	// https://docs.microsoft.com/en-us/windows/uwp/design/style/segoe-ui-symbol-font
 	FontIcon settingsIcon;
 	settingsIcon.Glyph(L"\xE713");
@@ -271,6 +290,7 @@ void SetupMenu()
 	});
 
 	MenuFlyout menu;
+	menu.Items().Append(lanItem);
 	menu.Items().Append(settingsItem);
 	menu.Items().Append(exitItem);
 	menu.Opened([](const auto& sender, const auto&) {

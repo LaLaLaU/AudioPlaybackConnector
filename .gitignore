@@ -340,3 +340,8 @@ ASALocalRun/
 healthchecksdb
 
 translate/generated
+
+# LAN extension: local tooling and generated releases
+.tooling/
+dist/
+artifacts/

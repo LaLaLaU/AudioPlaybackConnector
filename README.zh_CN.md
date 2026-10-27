@@ -1,4 +1,6 @@
 # AudioPlaybackConnector
+
+> 此分支新增局域网音频收发模块。运行方法、构建说明和限制见 [README.LAN.md](README.LAN.md)。
 [English](https://github.com/ysc3839/AudioPlaybackConnector/blob/master/README.md) | **简体中文**
 
 Windows 10 2004+ 蓝牙音频接收 (A2DP Sink) 连接工具。
